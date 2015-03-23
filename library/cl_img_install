@@ -36,7 +36,9 @@ is the version to install.
 To run the installed code, reboot the switch
         choices: ['yes', 'no']
         default: 'no'
-
+    switch_slots:
+        description:
+            - alias to 'switch_slot'
 requirements: ["Cumulus Linux OS"]
 
 '''
@@ -264,8 +266,14 @@ def main():
             src=dict(required=True, type='str'),
             version=dict(type='str'),
             switch_slot=dict(type='bool', choices=BOOLEANS, default=False),
+            switch_slots=dict(type='bool', choices=BOOLEANS, default=False)
         ),
+        mutually_exclusive=[['switch_slot', 'switch_slots']]
     )
+
+    # alias switch_slots => switch_slot
+    if module.params.get('switch_slots'):
+        module.params['switch_slot'] = module.params.get('switch_slots')
 
     determine_sw_version(module)
     _url = module.params.get('src')

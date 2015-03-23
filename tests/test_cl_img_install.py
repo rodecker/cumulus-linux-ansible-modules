@@ -16,6 +16,7 @@ slot_values = {
 arg_values = {
     'version': None,
     'switch_slot': 'no',
+    'switch_slots': None,
     'src': '/root/CumulusLinux-2.1.3.bin'
 }
 
@@ -297,12 +298,19 @@ def test_module_args(mock_module,
     mock_module.assert_called_with(
         argument_spec={'src': {'required': True, 'type': 'str'},
                        'version': {'type': 'str'},
+                       'switch_slots':  {
+                           'type': 'bool',
+                           'default': False,
+                           'choices': ['yes', 'on', '1',
+                                       'true', 1, 'no',
+                                       'off', '0', 'false', 0]},
                        'switch_slot':  {
                            'type': 'bool',
                            'default': False,
                            'choices': ['yes', 'on', '1',
                                        'true', 1, 'no',
-                                       'off', '0', 'false', 0]}})
+                                       'off', '0', 'false', 0]}},
+        mutually_exclusive=[['switch_slot', 'switch_slots']])
 
 
 @mock.patch('dev_modules.cl_img_install.AnsibleModule')
