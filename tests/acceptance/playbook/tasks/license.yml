@@ -6,3 +6,6 @@
 
 - name: License switch
   cl_license: src="/tmp/test_noeula.v1"
+
+- name: License switch with force
+  cl_license: src="/tmp/test_noeula.v1" force=true
