@@ -13,8 +13,6 @@ ansible.hosts
 /.temp_mods
 tests/write_to_ports_conf
 Session.vim
-ansible.cfg
-ansible.hosts
 .bundle
 .vagrant
 .rspec
