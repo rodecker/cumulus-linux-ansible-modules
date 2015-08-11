@@ -2,3 +2,4 @@
   - hosts: all
     tasks:
       - include: tasks/license.yml
+      - include: tasks/ports.yml
