@@ -6,6 +6,9 @@ Vagrant.configure(2) do |config|
   config.vm.define 'default' do |default|
     default.vm.box = 'cumulus-vx-2.5.3'
 
+    default.vm.network "private_network", virtualbox__intnet: true
+    default.vm.network "private_network", virtualbox__intnet: true
+
     default.vm.provision :ansible do |ansible|
       ansible.playbook = 'tests/acceptance/playbook/default.yml'
       ansible.sudo = true
