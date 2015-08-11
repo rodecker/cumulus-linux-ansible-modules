@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-%w(lo eth0 swp2).each do |intf|
+%w(lo eth0 swp1 swp2 swp3).each do |intf|
   describe interface(intf) do
     it { should exist }
     it { should be_up } if intf != 'lo'
@@ -11,10 +11,10 @@ require_relative '../spec_helper'
   end
 end
 
-describe interface('swp3') do
+describe interface('swp4') do
   it { should_not be_up }
 end
 
-describe file('/etc/network/interfaces/swp3') do
+describe file('/etc/network/interfaces/swp4') do
   it { should_not exist }
 end
