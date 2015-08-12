@@ -5,7 +5,7 @@
       - include: tasks/ports.yml
       - include: tasks/interfaces.yml
       - include: tasks/bonds.yml
-      #- include: tasks/bridges.yml
+      - include: tasks/bridges.yml
       - include: tasks/interface_policy.yml
     handlers:
       - include: handlers/main.yml

@@ -16,5 +16,5 @@
   copy: dest=/etc/network/interfaces src=files/interfaces
 
 - name: Apply interfaces policy
-  cl_interface_policy: allowed="lo, eth0, swp1, swp2, swp3, bond0, bond1"
+  cl_interface_policy: allowed="lo, eth0, swp1, swp2, swp3, bond0, bond1, br0, br1, bridge2, bridge3"
   notify: reload networking
