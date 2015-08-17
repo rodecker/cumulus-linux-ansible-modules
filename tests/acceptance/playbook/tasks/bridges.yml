@@ -1,0 +1,43 @@
+- name: Classic bridge driver with defaults
+  cl_bridge:
+    name: br0
+    ports: ['swp10', 'swp11-12', 'swp13']
+  notify: reload networking
+
+- name: Classic bridge driver over-ride all defaults
+  cl_bridge:
+    name: br1
+    ports: ['swp14-15']
+    ipv4: ['10.0.0.1/24', '192.168.1.0/16']
+    ipv6: ['2001:db8:abcd::/48']
+    alias_name: 'classic bridge number 1'
+    mtu: 9000
+    stp: false
+    mstpctl_treeprio: 4096
+    virtual_ip: '192.168.100.1'
+    virtual_mac: '11:22:33:44:55:66'
+  notify: reload networking
+
+- name: New bridge driver with defaults
+  cl_bridge:
+    name: bridge2
+    ports: ['swp16-17']
+    vlan_aware: true
+  notify: reload networking
+
+- name: New bridge driver over-ride all defaults
+  cl_bridge:
+    name: bridge3
+    ports: ['swp18-19']
+    vlan_aware: true
+    vids: ['1-4094']
+    pvid: 1
+    ipv4: ['10.0.100.1/24', '192.168.100.0/16']
+    ipv6: ['2001:db8:1234::/48']
+    alias_name: 'new bridge number 3'
+    mtu: 9000
+    stp: false
+    mstpctl_treeprio: 4096
+    virtual_ip: '192.168.100.2'
+    virtual_mac: 'aa:bb:cc:dd:ee:ff'
+  notify: reload networking

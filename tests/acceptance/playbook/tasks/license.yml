@@ -1,0 +1,11 @@
+- name: Copy test license
+  copy: src=files/test_noeula.v1 dest=/tmp/test_noeula.v1
+
+- name: Copy fake cl-license
+  copy: src=files/cl-license dest=/usr/cumulus/bin/cl-license mode=0755
+
+- name: License switch
+  cl_license: src="/tmp/test_noeula.v1"
+
+- name: License switch with force
+  cl_license: src="/tmp/test_noeula.v1" force=true

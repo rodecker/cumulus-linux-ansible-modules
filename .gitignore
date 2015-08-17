@@ -1,6 +1,5 @@
 library/__init__.py
 *.swp
-ansible.cfg
 site.yml
 ansible.hosts
 *.ropeproject
@@ -14,5 +13,7 @@ ansible.hosts
 /.temp_mods
 tests/write_to_ports_conf
 Session.vim
-ansible.cfg
-ansible.hosts
+.bundle
+.vagrant
+.rspec
+vendor

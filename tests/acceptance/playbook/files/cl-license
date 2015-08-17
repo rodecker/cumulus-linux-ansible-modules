@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "Rocket Turtle!\nexpires=$(date +%s)\n$0 $@" > /etc/cumulus/.license.txt
