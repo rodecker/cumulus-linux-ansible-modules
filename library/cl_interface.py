@@ -1,23 +1,33 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_interface
-author: Cumulus Networks
-short_description: Configures a front panel port, loopback or \
-management port on Cumulus Linux.
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
+short_description: Configures a front panel port, loopback or
+                  management port on Cumulus Linux.
 description:
-    - Configures a front panel, sub-interface, SVI, management \
-or loopback port on a Cumulus Linux switch. For bridge ports \
-use the cl_bridge module. For bond ports use the \
-cl_bond module. When configuring bridge related features like \
-the "vid" option, please follow the guidelines for configuring \
-"vlan aware" bridging. For more details \
-review the Layer2 Interface Guide @ \
-http://docs.cumulusnetworks.com
+    - Configures a front panel, sub-interface, SVI, management or loopback port
+      on a Cumulus Linux switch. For bridge ports use the cl_bridge module. For
+      bond ports use the cl_bond module. When configuring bridge related
+      features like the "vid" option, please follow the guidelines for
+      configuring "vlan aware" bridging. For more details review the Layer2
+      Interface Guide at http://docs.cumulusnetworks.com
 options:
     name:
         description:
@@ -28,20 +38,20 @@ options:
             - add a port description
     ipv4:
         description:
-            - list of IPv4 addresses to configure on the interface. \
-use X.X.X.X/YY syntax.
+            - list of IPv4 addresses to configure on the interface.
+              use X.X.X.X/YY syntax.
     ipv6:
         description:
-            - list of IPv6 addresses  to configure on the interface. \
-use X:X:X::X/YYY syntax
+            - list of IPv6 addresses  to configure on the interface.
+              use X:X:X::X/YYY syntax
     addr_method:
         description:
-            - can be loopback for loopback interfaces or dhcp for dhcp \
-interfaces.
+            - can be loopback for loopback interfaces or dhcp for dhcp
+              interfaces.
     speed:
         description:
-            - set speed of the swp(front panel) or \
-management(eth0) interface. speed is in MB
+            - set speed of the swp(front panel) or management(eth0) interface.
+              speed is in MB
     mtu:
         description:
             - set MTU. Configure Jumbo Frame by setting MTU to 9000.
@@ -63,20 +73,20 @@ management(eth0) interface. speed is in MB
             - Enables bridge assurance in vlan-aware mode
     clagd_enable:
         description:
-            - Enables the clagd daemon. This command should only \
-be applied to the clag peerlink interface
+            - Enables the clagd daemon. This command should only be applied to
+              the clag peerlink interface
     clagd_priority:
         description:
-            - Integer that changes the role the switch has in the clag domain \
-The lower priority switch will assume the primary role. The number can be \
-0 and 65535
+            - Integer that changes the role the switch has in the clag domain.
+              The lower priority switch will assume the primary role. The number
+              can be between 0 and 65535
     clagd_peer_ip:
         description:
             - IP address of the directly connected peer switch interface
     clagd_sys_mac:
         description:
-            - Clagd system mac address. Recommended to use the range starting \
-with 44:38:39:ff. Needs to be the same between 2 Clag switches
+            - Clagd system mac address. Recommended to use the range starting
+              with 44:38:39:ff. Needs to be the same between 2 Clag switches
     pvid:
         description:
             - in vlan aware mode, defines vlan that is the untagged vlan
@@ -89,13 +99,12 @@ with 44:38:39:ff. Needs to be the same between 2 Clag switches
 requirements: [ Alternate Debian network interface manager - \
 ifupdown2 @ github.com/CumulusNetworks/ifupdown2 ]
 notes:
-    - because the module writes the interface directory location. Ensure that \
-``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' \
-or whatever path is mentioned in the ``location`` attribute.
+    - because the module writes the interface directory location. Ensure that
+      ``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' or
+      whatever path is mentioned in the ``location`` attribute.
 
-    - For the config to be activated, i.e installed in the kernel, \
-"service networking reloaded" needs be be executed. See EXAMPLES section.
-
+    - For the config to be activated, i.e installed in the kernel,
+      "service networking reload" needs be be executed. See EXAMPLES section.
 '''
 
 EXAMPLES = '''

@@ -1,22 +1,35 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2014, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_quagga_ospf
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Configure basic OSPFv2 parameters and interfaces using Quagga
 description:
-    - Configures basic OSPFv2 global parameters such as \
-router id and bandwidth cost, or OSPFv2 interface configuration \
-like point-to-point settings or enabling OSPFv2 on an interface. \
-Configuration is applied to single OSPFv2 instance. \
-Multiple OSPFv2 instance configuration is currently not supported. \
-It requires Quagga version 0.99.22 and higher with the non-modal Quagga CLI \
-developed by Cumulus Linux. For more details go to the Routing User Guide @ \
-http://cumulusnetworks.com/docs/2.2/  and Quagga Docs @  http://www.nongnu.org/quagga/
+    - Configures basic OSPFv2 global parameters such as
+      router id and bandwidth cost, or OSPFv2 interface configuration like
+      point-to-point settings or enabling OSPFv2 on an interface. Configuration
+      is applied to single OSPFv2 instance. Multiple OSPFv2 instance
+      configuration is currently not supported. It requires Quagga version
+      0.99.22 and higher with the non-modal Quagga CLI developed by Cumulus
+      Linux. For more details go to the Routing User Guide at
+      http://docs.cumulusnetworks.com/ and Quagga Docs at
+      http://www.nongnu.org/quagga/
 options:
     router_id:
         description:
@@ -58,12 +71,11 @@ options:
             - with interface option
     state:
         description:
-            - Describes if OSPFv2 should be present on a particular interface.\
-Module currently does not check that interface is not associated \
-with a bond or bridge. \
-User will have to manually clear the configuration of the interface \
-from the bond or bridge. \
-This will be implemented in a later release
+            - Describes if OSPFv2 should be present on a particular interface.
+              Module currently does not check that interface is not associated
+              with a bond or bridge. User will have to manually clear the
+              configuration of the interface from the bond or bridge. This will
+              be implemented in a later release
         choices: [ 'present', 'absent']
         default: 'present'
         required_together:
@@ -76,8 +88,8 @@ Example playbook entries using the cl_quagga_ospf module
     tasks:
     - name: configure ospf router_id
         cl_quagga_ospf: router_id=10.1.1.1
-    - name: enable OSPFv2 on swp1 and set it be a point2point OSPF \
-interface with a cost of 65535
+    - name: enable OSPFv2 on swp1 and set it be a point2point OSPF
+      interface with a cost of 65535
         cl_quagga_ospf: interface=swp1 point2point=yes cost=65535
     - name: enable ospf on swp1-5
         cl_quagga_ospf: interface={{ item }}

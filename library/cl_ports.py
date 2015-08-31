@@ -1,21 +1,32 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_ports
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Configure Cumulus Switch port attributes (ports.conf)
 description:
-    - Set the initial port attribute defined in the Cumulus Linux ports.conf, \
-file. This module does not do any error checking at the moment. Be careful to \
-not include ports that do not exist on the switch. \
-Carefully read the original \
-ports.conf file for any exceptions or limitations. \
-For more details go the Configure Switch Port Attribute Documentation @ \
-http://docs.cumulusnetworks.com
+    - Set the initial port attribute defined in the Cumulus Linux ports.conf,
+      file. This module does not do any error checking at the moment. Be careful
+      to not include ports that do not exist on the switch. Carefully read the
+      original ports.conf file for any exceptions or limitations.
+      For more details go the Configure Switch Port Attribute Documentation at
+      http://docs.cumulusnetworks.com
 options:
     speed_10g:
         description:
@@ -31,9 +42,8 @@ options:
             - list of 10G ports that will be ganged to form a 40G port
 '''
 EXAMPLES = '''
-Example playbook entries using the cl_ports module to \
-manage the switch attributes
-defined in the ports.conf file on Cumulus Linux
+Example playbook entries using the cl_ports module to manage the switch
+attributes defined in the ports.conf file on Cumulus Linux
 
 ## Unganged port config using simple args
    - name: configure ports.conf setup

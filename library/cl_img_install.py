@@ -1,39 +1,49 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2014, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_img_install
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Install a different Cumulus Linux version.
 description:
-    - install a different version of Cumulus Linux in the inactive slot. For \
-more details go the Image Management User Guide @ \
-http://cumulusnetworks.com/docs/2.2/
+    - install a different version of Cumulus Linux in the inactive slot. For
+      more details go the Image Management User Guide @
+      http://docs.cumulusnetworks.com/
 options:
     src:
         description:
-            - full path to the Cumulus Linux binary image. \
-Can be a local path, http or https URL.  \
-If the code version is in the name of the file, the module will assume this \
-is the version of code you wish to install.
+            - full path to the Cumulus Linux binary image. Can be a local path,
+              http or https URL. If the code version is in the name of the file,
+              the module will assume this is the version of code you wish to
+              install.
         required: true
     version:
         description:
-            -  inform the module of the exact version one is  installing. \
-This overrides the automatic check of version in the file name. \
-For example, if the binary file name \
-is called CumulusLinux-2.2.3.bin, and version is set to '2.5.0', \
-then the module will assume it \
-is installing '2.5.0' not '2.2.3'. If version is not included, \
-then the module will assume '2.2.3' \
-is the version to install.
+            - inform the module of the exact version one is installing. This
+              overrides the automatic check of version in the file name. For
+              example, if the binary file name is called CumulusLinux-2.2.3.bin,
+              and version is set to '2.5.0', then the module will assume it is
+              installing '2.5.0' not '2.2.3'. If version is not included, then
+              the module will assume '2.2.3' is the version to install.
     switch_slot:
         description:
-            - Switch slots after installing the image. \
-To run the installed code, reboot the switch
+            - Switch slots after installing the image.
+              To run the installed code, reboot the switch
         choices: ['yes', 'no']
         default: 'no'
 
@@ -45,8 +55,8 @@ Example playbook entries using the cl_img_install module
 
 ## Download and install the image from a webserver.
 
-   - name: install image using using http url. Switch slots so the subsequent \
-will load the new version
+   - name: install image using using http url. Switch slots so the subsequent
+     will load the new version
       cl_img_install: version=2.0.1
           src='http://10.1.1.1/CumulusLinux-2.0.1.bin'
           switch_slot=yes

@@ -1,19 +1,30 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_bridge
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Configures a bridge port on Cumulus Linux
 description:
-    - Configures a bridge interface on Cumulus Linux To configure a bond port \
-use the cl_bond module. To configure any other type of interface use the \
-cl_interface module. Follow the guidelines for \
-bridging found in the Cumulus User Guide @ \
-http://docs.cumulusnetworks.com
+    - Configures a bridge interface on Cumulus Linux To configure a bond port
+      use the cl_bond module. To configure any other type of interface use the
+      cl_interface module. Follow the guidelines for bridging found in the
+      Cumulus User Guide at http://docs.cumulusnetworks.com
 options:
     name:
         description:
@@ -24,16 +35,16 @@ options:
             - add a port description
     ipv4:
         description:
-            - list of IPv4 addresses to configure on the interface. \
-use X.X.X.X/YY syntax.
+            - list of IPv4 addresses to configure on the interface.
+              use X.X.X.X/YY syntax.
     ipv6:
         description:
-            - list of IPv6 addresses  to configure on the interface. \
-use X:X:X::X/YYY syntax
+            - list of IPv6 addresses  to configure on the interface.
+              use X:X:X::X/YYY syntax
     addr_method:
         description:
-            - configures the port to use DHCP. \
-To enable this feature use the option 'dhcp'
+            - configures the port to use DHCP.
+              To enable this feature use the option 'dhcp'
         choices: ['dhcp']
     mtu:
         description:
@@ -52,9 +63,9 @@ To enable this feature use the option 'dhcp'
             - in vlan aware mode, defines vlan that is the untagged vlan
     stp:
         description:
-            - enables spanning tree. As of Cumulus Linux 2.5 the default \
-bridging mode, only per vlan RSTP or 802.1d is supported. For the vlan \
-aware mode, only common instance STP is supported
+            - enables spanning tree. As of Cumulus Linux 2.5 the default
+              bridging mode, only per vlan RSTP or 802.1d is supported. For the
+              vlan aware mode, only common instance STP is supported
         default: 'yes'
     ports:
         description:
@@ -76,14 +87,12 @@ aware mode, only common instance STP is supported
 requirements: [ Alternate Debian network interface manager - \
 ifupdown2 @ github.com/CumulusNetworks/ifupdown2 ]
 notes:
-    - because the module writes the interface directory location. Ensure that \
-``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' \
-or whatever path is mentioned in the ``location`` attribute.
+    - because the module writes the interface directory location. Ensure that
+      ``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' or
+      whatever path is mentioned in the ``location`` attribute.
 
-    - For the config to be activated, i.e installed in the kernel, \
-"service networking reloaded" needs be be executed. See EXAMPLES section.
-
-
+    - For the config to be activated, i.e installed in the kernel,
+      "service networking reload" needs be be executed. See EXAMPLES section.
 '''
 
 EXAMPLES = '''

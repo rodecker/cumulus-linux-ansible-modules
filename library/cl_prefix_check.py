@@ -1,27 +1,38 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2014, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_prefix_check
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Check to see if route/prefix exists
 description:
-    - Check to see if a route exists. This module can be used simply \
-to check a route and return if its present or absent. \
-A larger timeout can be provided to check if a route disappears.  \
-An example would be the user could change the OSPF cost \
-of a node within the network then utilize cl_prefix_check \
-of another (separate) node to verify the node \
-(where the OSPF cost was changed) is not being use to  \
-route traffic.
+    - Check to see if a route exists. This module can be used simply to check a
+      route and return if its present or absent. A larger timeout can be
+      provided to check if a route disappears. An example would be the user
+      could change the OSPF cost of a node within the network then utilize
+      cl_prefix_check of another (separate) node to verify the node (where the
+      OSPF cost was changed) is not being use to route traffic.
 options:
     prefix:
         description:
-            - route/prefix that module is checking for. Uses format \
-acceptable to "ip route show" command. See manpage of "ip-route" for more details
+            - route/prefix that module is checking for. Uses format acceptable
+              to "ip route show" command. See manpage of "ip-route" for more
+              details
         required: true
     state:
         description:
@@ -46,31 +57,31 @@ acceptable to "ip route show" command. See manpage of "ip-route" for more detail
         default: ""
 
 notes:
-    - IP Route Documentation - http://manpages.ubuntu.com/manpages/precise/man8/route.8.html\
-    - Contact Cumulus Networks @ http://cumulusnetworks.com/contact/
+    - IP Route Documentation -
+      http://manpages.ubuntu.com/manpages/precise/man8/route.8.html
 '''
 EXAMPLES = '''
-Example playbook entries using the cl_prefix_check \
-module to check if a prefix exists
+Example playbook entries using the cl_prefix_check module to check if a prefix
+exists
 
     tasks:
     - name:  Test if prefix is present.
       cl_prefix_check: prefix=4.4.4.0/24
 
-    - name: Test if route is absent. poll for 200 seconds. Poll interval \
-at default setting of 1 second
+    - name: Test if route is absent. poll for 200 seconds. Poll interval at
+      default setting of 1 second
       cl_prefix_check: prefix=10.0.1.0/24 timeout=200 state=absent
 
-    - name: Test if route is present, with a timeout of 10 seconds and poll \
-interval of 2 seconds
+    - name: Test if route is present, with a timeout of 10 seconds and poll
+      interval of 2 seconds
       cl_prefix_check: prefix=10.1.1.0/24 timeout=10 poll_interval=2
 
-    - name: Test if route is present, with a nexthop of 4.4.4.4 \
-     will fail if no nexthop of 4.4.4.4
+    - name: Test if route is present, with a nexthop of 4.4.4.4 will fail if no
+      nexthop of 5.5.5.5
       cl_prefix_check: prefix=4.4.4.4 nexthop=5.5.5.5
 
-    - name: Test if route is present, with no nexthop of 3.3.3.3 \
-     will fail if there is a nexthop of 3.3.3.3
+    - name: Test if route is present, with no nexthop of 3.3.3.3 will fail if
+      there is a nexthop of 6.6.6.6
       cl_prefix_check: prefix=3.3.3.3 nonexthop=6.6.6.6
 
 

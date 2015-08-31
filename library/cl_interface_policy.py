@@ -1,21 +1,34 @@
 #!/usr/bin/env python
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_interface_policy
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Configure interface enforcement policy on Cumulus Linux
 description:
-    - This module affects the configuration files located in the interfaces \
-folder defined by ifupdown2. Interfaces port and port ranges listed in the \
-"allowed" parameter define what interfaces will be available on the switch. \
-If the user runs this module and has an interface configured on the switch, \
-but not found in the "allowed" list, this interface will be unconfigured. \
-By default this is `/etc/network/interface.d` \
-For more details go the Configuring Interfaces @ \
-http://docs.cumulusnetworks.com
+    - This module affects the configuration files located in the interfaces
+      folder defined by ifupdown2. Interfaces port and port ranges listed in the
+      "allowed" parameter define what interfaces will be available on the
+      switch. If the user runs this module and has an interface configured on
+      the switch, but not found in the "allowed" list, this interface will be
+      unconfigured. By default this is `/etc/network/interface.d`
+      For more details go the Configuring Interfaces at
+      http://docs.cumulusnetworks.com
 notes:
     - lo must be included in the allowed list.
     - eth0 must be in allowed list if out of band management is done
