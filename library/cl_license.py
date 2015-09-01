@@ -1,47 +1,56 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_license
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Install Cumulus Linux license
 description:
-    - Installs a Cumulus Linux license. The module reports no change of status \
-when a license is installed. \
-For more details go the Cumulus Linux License Documentation @ \
-http://docs.cumulusnetwork.com and the Licensing KB Site @ \
-https://support.cumulusnetworks.com/hc/en-us/sections/200507688
+    - Installs a Cumulus Linux license. The module reports no change of status
+      when a license is installed.
+      For more details go the Cumulus Linux License Documentation @
+      http://docs.cumulusnetwork.com and the Licensing KB Site @
+      https://support.cumulusnetworks.com/hc/en-us/sections/200507688
 notes:
-    - to activate a license for the FIRST time, the switchd service must be restarted. \
-This action is disruptive. The license renewal process occurs via the \
-Cumulus Networks Customer Portal - http://customers.cumulusnetworks.com.
-    - A non-EULA license is REQUIRED for automation. \
-Manually install the license on a test switch, \
-using the command "cl-license -i <license_file> " to confirm the license is a Non-EULA license.
-
-See EXAMPLES, for the proper way to issue this notify action. \
-References: \
-https://support.cumulusnetworks.com/hc/en-us/sections/200507688
+    - to activate a license for the FIRST time, the switchd service must be
+      restarted. This action is disruptive. The license renewal process occurs
+      via the Cumulus Networks Customer Portal -
+      http://customers.cumulusnetworks.com.
+    - A non-EULA license is REQUIRED for automation. Manually install the
+      license on a test switch, using the command "cl-license -i <license_file>"
+      to confirm the license is a Non-EULA license.
+      See EXAMPLES, for the proper way to issue this notify action.
 options:
     src:
         description:
             - full path to the license. Can be local path or http url
     force:
         description:
-            - force installation of a license. Typically not needed. \
-It is recommended to manually run this \
-command via the ansible command. A reload of switchd is not required. Running \
-the force option in a playbook will break the idempotent state machine of the module and \
-cause the switchd notification to kick in all the time, the module executes \
-causing a disruption.
+            - force installation of a license. Typically not needed.
+              It is recommended to manually run this command via the ansible
+              command. A reload of switchd is not required. Running the force
+              option in a playbook will break the idempotent state machine of
+              the module and cause the switchd notification to kick in all the
+              time, causing a disruption.
 
 '''
 EXAMPLES = '''
-Example playbook using the cl_license module to manage \
-licenses on Cumulus Linux
+Example playbook using the cl_license module to manage licenses on Cumulus Linux
 
 ---
    - hosts: all
@@ -50,8 +59,8 @@ licenses on Cumulus Linux
          cl_license: src='http://10.1.1.1/license.txt'
          notify: restart switchd
 
-       - name: Triggers switchd to be restarted right away, \
-before play, or role is over. This is desired behaviour
+       - name: Triggers switchd to be restarted right away, before play, or role
+               is over. This is desired behaviour
          meta: flush_handlers
 
        - name: configure interfaces

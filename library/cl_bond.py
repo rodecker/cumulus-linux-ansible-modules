@@ -1,19 +1,30 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
 #
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
-#
-#
+# This file is part of Ansible
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 DOCUMENTATION = '''
 ---
 module: cl_bond
-author: Cumulus Networks
+author: "Cumulus Networks (ce-ceng@cumulusnetworks.com)"
 short_description: Configures a bond port on Cumulus Linux
 description:
-    - Configures a bond interface on Cumulus Linux To configure a bridge port \
-use the cl_bridge module. To configure any other type of interface use the \
-cl_interface module. Follow the guidelines for \
-bonding found in the Cumulus User Guide @ \
-http://docs.cumulusnetworks.com
+    - Configures a bond interface on Cumulus Linux To configure a bridge port
+      use the cl_bridge module. To configure any other type of interface use the
+      cl_interface module. Follow the guidelines for bonding found in the
+      Cumulus User Guide at http://docs.cumulusnetworks.com
 options:
     name:
         description:
@@ -24,16 +35,16 @@ options:
             - add a port description
     ipv4:
         description:
-            - list of IPv4 addresses to configure on the interface. \
-use X.X.X.X/YY syntax.
+            - list of IPv4 addresses to configure on the interface.
+              use X.X.X.X/YY syntax.
     ipv6:
         description:
-            - list of IPv6 addresses  to configure on the interface. \
-use X:X:X::X/YYY syntax
+            - list of IPv6 addresses  to configure on the interface.
+              use X:X:X::X/YYY syntax
     addr_method:
         description:
-            - configures the port to use DHCP. \
-To enable this feature use the option 'dhcp'
+            - configures the port to use DHCP.
+              To enable this feature use the option 'dhcp'
         choices: ['dhcp']
     mtu:
         description:
@@ -55,10 +66,10 @@ To enable this feature use the option 'dhcp'
             - Enables bridge assurance in vlan-aware mode
     clag_id:
         description:
-            - specify a unique clag_id for every dual connected bond on each \
-on each peer switch. The value must be between 1 and 65535 and must be the \
-same on both peer switches in order for the bond to be considered \
-dual-connected
+            - specify a unique clag_id for every dual connected bond on each
+              peer switch. The value must be between 1 and 65535 and must be the
+              same on both peer switches in order for the bond to be considered
+              dual-connected
     pvid:
         description:
             - in vlan aware mode, defines vlan that is the untagged vlan
@@ -68,8 +79,8 @@ dual-connected
         default: 100
     mode:
         description:
-            - bond mode. as of Cumulus Linux 2.5 only  LACP bond mode is \
-supported
+            - bond mode. as of Cumulus Linux 2.5 only LACP bond mode is
+              supported
         default: '802.3ad'
     min_links:
         description:
@@ -85,8 +96,8 @@ supported
         required: True
     xmit_hash_policy:
         description:
-            - transmit load balancing algorithm. As of Cumulus Linux 2.5 only \
-layer3+4 policy is supported
+            - transmit load balancing algorithm. As of Cumulus Linux 2.5 only
+              layer3+4 policy is supported
         default: layer3+4
     location:
         description:
@@ -98,12 +109,12 @@ layer3+4 policy is supported
 requirements:  [ Alternate Debian network interface manager - \
 ifupdown2 @ github.com/CumulusNetworks/ifupdown2 ]
 notes:
-    - because the module writes the interface directory location. Ensure that \
-``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' \
-or whatever path is mentioned in the ``location`` attribute.
+    - because the module writes the interface directory location. Ensure that
+      ``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' or
+      whatever path is mentioned in the ``location`` attribute.
 
-    - For the config to be activated, i.e installed in the kernel, \
-"service networking reloaded" needs be be executed. See EXAMPLES section.
+    - For the config to be activated, i.e installed in the kernel,
+      "service networking reload" needs be be executed. See EXAMPLES section.
 '''
 
 EXAMPLES = '''
