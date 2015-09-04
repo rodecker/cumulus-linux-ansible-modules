@@ -19,6 +19,9 @@ def test_build_desired_iface_config(mock_module,
                    mock.call(mock_module, 'xmit_hash_policy'),
                    mock.call(mock_module, 'miimon'),
                    mock.call(mock_module, 'lacp_rate'),
+                   mock.call(mock_module, 'lacp_bypass_allow'),
+                   mock.call(mock_module, 'lacp_bypass_period'),
+                   mock.call(mock_module, 'lacp_bypass_all_active'),
                    mock.call(mock_module, 'min_links')])
 
 
@@ -39,6 +42,7 @@ def test_module_args(mock_module,
     cl_int.main()
     mock_module.assert_called_with(
         required_together=[['virtual_ip', 'virtual_mac']],
+        mutually_exclusive=[['lacp_bypass_priority', 'lacp_bypass_all_active']],
         argument_spec={
             'addr_method': {
                 'type': 'str',
@@ -59,6 +63,10 @@ def test_module_args(mock_module,
                 'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
             'clag_id': {'type': 'str'},
             'lacp_rate': {'type': 'int', 'default': 1},
+            'lacp_bypass_allow': {'type': 'int', 'choices': [0, 1]},
+            'lacp_bypass_all_active': {'type': 'int', 'choices': [0, 1]},
+            'lacp_bypass_period': {'type': 'int'},
+            'lacp_bypass_priority': {'type': 'list'},
             'miimon': {'type': 'int', 'default': 100},
             'min_links': {'type': 'int', 'default': 1},
             'mode': {'type': 'str', 'default': '802.3ad'},
@@ -207,6 +215,7 @@ def test_build_bond_attr(mock_module):
     assert_equals(mock_module.custom_desired_config,
                   {'config': {
                       'bond-lacp-rate': '1'}})
+
     # test doing slaves
     mock_module.custom_desired_config = {'config': {}}
     mock_module.params = {'slaves': ['swp1-3', 'swp5']}
@@ -237,6 +246,13 @@ def test_build_generic_attr(mock_module):
                   {'config': {
                       'mstpctl-portnetwork': 'yes'}})
 
+    # test array
+    mock_module.custom_desired_config = {'config': {}}
+    mock_module.params = {'lacp_bypass_priority': ['swp1=10', 'swp2=10']}
+    cl_int.build_generic_attr(mock_module, 'lacp_bypass_priority')
+    assert_equals(mock_module.custom_desired_config,
+                  {'config': {
+                      'lacp-bypass-priority': 'swp1=10 swp2=10'}})
 
 @mock.patch('library.cl_bond.AnsibleModule')
 def test_config_dict_changed(mock_module):
