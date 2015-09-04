@@ -64,6 +64,9 @@ options:
     mstpctl_portnetwork:
         description:
             - Enables bridge assurance in vlan-aware mode
+    mstpctl_portadminedge:
+        description:
+            - Enables admin edge port
     clag_id:
         description:
             - specify a unique clag_id for every dual connected bond on each
@@ -143,6 +146,7 @@ cl_bond:
   virtual_ip: "{{ item.value.virtual_ip|default(omit) }}"
   virtual_mac: "{{ item.value.virtual_mac|default(omit) }}"
   mstpctl_portnetwork: "{{ item.value.mstpctl_portnetwork|default('no') }}"
+  mstpctl_portadminedge: "{{ item.value.mstpctl_portadminedge|default('no') }}"
   mstpctl_bpduguard: "{{ item.value.mstpctl_bpduguard|default('no') }}"
 with_dict: cl_bonds
 notify: reload networking
@@ -304,7 +308,7 @@ def build_desired_iface_config(module):
     build_pvid(module)
     build_alias_name(module)
     build_vrr(module)
-    for _attr in ['mtu', 'mstpctl_portnetwork',
+    for _attr in ['mtu', 'mstpctl_portnetwork', 'mstpctl_portadminedge',
                   'mstpctl_bpduguard', 'clag_id']:
         build_generic_attr(module, _attr)
 
@@ -371,6 +375,7 @@ def main():
             vids=dict(type='list'),
             pvid=dict(type='str'),
             mstpctl_portnetwork=dict(type='bool', choices=BOOLEANS),
+            mstpctl_portadminedge=dict(type='bool', choices=BOOLEANS),
             mstpctl_bpduguard=dict(type='bool', choices=BOOLEANS),
             clag_id=dict(type='str'),
             min_links=dict(type='int', default=1),

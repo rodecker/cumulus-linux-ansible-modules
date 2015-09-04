@@ -38,6 +38,8 @@ def test_module_args(mock_module,
             'pvid': {'type': 'str'},
             'mstpctl_portnetwork': {'type': 'bool', 'choices': [
                 'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
+            'mstpctl_portadminedge': {'type': 'bool', 'choices': [
+                'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
             'mstpctl_bpduguard': {'type': 'bool', 'choices': [
                 'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
             'clagd_enable': {'type': 'bool', 'choices': [
