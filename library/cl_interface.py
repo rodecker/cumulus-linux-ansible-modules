@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # (c) 2015, Cumulus Networks <ce-ceng@cumulusnetworks.com>
