@@ -86,6 +86,20 @@ options:
         description:
             - minimum number of links
         default: 1
+    lacp_bypass_allow:
+        description:
+            - Enable LACP bypass.
+    lacp_bypass_period:
+        description:
+            - Period for enabling LACP bypass. Max value is 900.
+    lacp_bypass_priority:
+        description:
+            - List of ports and priorities. Example "swp1=10, swp2=20"
+    lacp_bypass_all_active:
+        description:
+            - Activate all interfaces for bypass.
+              It is recommended to configure all_active instead
+              of using bypass_priority.
     lacp_rate:
         description:
             - lacp rate
@@ -227,9 +241,15 @@ def conv_bool_to_str(_value):
     return _value
 
 
+def conv_array_to_str(_value):
+    if isinstance(_value, list):
+        return ' '.join(_value)
+    return _value
+
 def build_generic_attr(module, _attr):
     _value = module.params.get(_attr)
     _value = conv_bool_to_str(_value)
+    _value = conv_array_to_str(_value)
     if _value:
         module.custom_desired_config['config'][
             re.sub('_', '-', _attr)] = str(_value)
@@ -295,7 +315,9 @@ def build_desired_iface_config(module):
     }
 
     for _attr in ['slaves', 'mode', 'xmit_hash_policy',
-                  'miimon', 'lacp_rate', 'min_links']:
+                  'miimon', 'lacp_rate', 'lacp_bypass_allow',
+                  'lacp_bypass_period', 'lacp_bypass_all_active',
+                  'min_links']:
         build_bond_attr(module, _attr)
 
     build_addr_method(module)
@@ -305,7 +327,8 @@ def build_desired_iface_config(module):
     build_alias_name(module)
     build_vrr(module)
     for _attr in ['mtu', 'mstpctl_portnetwork',
-                  'mstpctl_bpduguard', 'clag_id']:
+                  'mstpctl_bpduguard', 'clag_id',
+                  'lacp_bypass_priority']:
         build_generic_attr(module, _attr)
 
 
@@ -378,12 +401,15 @@ def main():
             miimon=dict(type='int', default=100),
             xmit_hash_policy=dict(type='str', default='layer3+4'),
             lacp_rate=dict(type='int', default=1),
+            lacp_bypass_allow=dict(type='int', choices=[0, 1]),
+            lacp_bypass_all_active=dict(type='int', choices=[0, 1]),
+            lacp_bypass_priority=dict(type='list'),
+            lacp_bypass_period=dict(type='int'),
             location=dict(type='str',
                           default='/etc/network/interfaces.d')
         ),
-        required_together=[
-            ['virtual_ip', 'virtual_mac']
-        ]
+        mutually_exclusive=[['lacp_bypass_priority', 'lacp_bypass_all_active']],
+        required_together=[['virtual_ip', 'virtual_mac']]
     )
 
     # if using the jinja default filter, this resolves to
