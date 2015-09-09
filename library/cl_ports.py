@@ -142,16 +142,17 @@ def write_to_ports_conf(module):
     """
     temp = tempfile.NamedTemporaryFile()
     try:
-        temp.write('# Managed By Ansible\n')
-        for k in sorted(module.ports_conf_hash.keys()):
-            port_setting = module.ports_conf_hash[k]
-            _str = "%s=%s\n" % (k, port_setting)
-            temp.write(_str)
-        temp.seek(0)
-        shutil.copyfile(temp.name, PORTS_CONF)
-    except IOError, error_msg:
-        module.fail_json(
-            msg="Failed to write to %s: %s" % (PORTS_CONF, error_msg))
+        try:
+            temp.write('# Managed By Ansible\n')
+            for k in sorted(module.ports_conf_hash.keys()):
+                port_setting = module.ports_conf_hash[k]
+                _str = "%s=%s\n" % (k, port_setting)
+                temp.write(_str)
+            temp.seek(0)
+            shutil.copyfile(temp.name, PORTS_CONF)
+        except IOError, error_msg:
+            module.fail_json(
+                msg="Failed to write to %s: %s" % (PORTS_CONF, error_msg))
     finally:
         temp.close()
 
