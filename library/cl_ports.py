@@ -69,7 +69,7 @@ def hash_existing_ports_conf(module):
 
     try:
         existing_ports_conf = open(PORTS_CONF).readlines()
-    except IOError as error_msg:
+    except IOError, error_msg:
         _msg = "Failed to open %s: %s" % (PORTS_CONF, error_msg)
         module.fail_json(msg=_msg)
         return # for testing only should return on module.fail_json
