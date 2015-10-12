@@ -105,7 +105,11 @@ notes:
     - because the module writes the interface directory location. Ensure that
       ``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' or
       whatever path is mentioned in the ``location`` attribute.
-
+    
+    - if an interface definition already exists in '/etc/nework/interfaces' and
+      a second interface is defined with cl_interfaces module change may 
+      never be considered idempotent. All configuration should be 
+    
     - For the config to be activated, i.e installed in the kernel,
       "service networking reload" needs be be executed. See EXAMPLES section.
 '''
