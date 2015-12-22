@@ -7,6 +7,23 @@ def run_cl_cmd(module, cmd):
     ret = out.splitlines()
     return ret
 
+def get_bios_version(module, facts):
+    """
+    grab bios info from dmesg. Seems to be common across
+    many cumulus switches. Accuracy unknown . TBD
+    """
+    (rc, out, err) = module.run_command('/bin/dmesg')
+    if rc:
+        facts['cumulus_bios_version'] = err
+        return
+    ret = out.splitlines()
+    for _line in ret:
+        if re.search(' BIOS ', _line):
+            try:
+              facts['cumulus_bios_version'] = _line.split('BIOS')[1].split()[0]
+            except IndexError:
+                pass
+            return
 
 def netshow_system_details(module, facts):
     if not os.path.exists('/usr/bin/netshow'):
@@ -59,6 +76,7 @@ def main():
     )
     syseeprom_details(module, results.get('ansible_facts'))
     netshow_system_details(module, results.get('ansible_facts'))
+    get_bios_version(module, results.get('ansible_facts'))
     module.exit_json(**results)
 
 
