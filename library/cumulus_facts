@@ -1,35 +1,4 @@
-#!/usr/bin/env python
-#
-# Copyright (C) 2015, Cumulus Networks www.cumulusnetworks.com
-#
-#
-DOCUMENTATION = '''
----
-module: cumulus_facts
-author: Stanley Karunditu
-short_description: Produces Cumulus Linux specific facts
-description:
-    - Produces Cumulus Linux specific facts. Currently includes 'productname' \
-which refers to the "platform-detect" output.  This module has no options\
-For more details refer to the Cumulus Linux Configuration Guide @ \
-http://docs.cumulusnetworks.com
-options:
-    no_options_for_this_module:
-        description:
-            - blank
-'''
-EXAMPLES = '''
-## Get cumulus specific facts. Currently only gets `platform-detect` output
-  - name: get cumulus specific facts
-    cumulus_facts:
-
-## Run this command only on Penguin Arctica 3200XL. custom fact collected from
-## previous run of `cumulus_facts`
-  - name: setup ports.conf
-    cl_ports:
-        speed_4_by_10g: ['swp1']
-    when: productname == 'cel,smallstone_xp'
-'''
+#!/usr/bin/python
 
 
 def run_cl_cmd(module, cmd):
@@ -39,15 +8,43 @@ def run_cl_cmd(module, cmd):
     return ret
 
 
+def syseeprom_details(module, facts):
+    (rc, out, err) = module.run_command('/usr/cumulus/bin/decode-syseeprom')
+
+    if rc:
+        facts['cumulus_syseeprom_facts'] = err
+        return
+
+    ret = out.splitlines()
+    start_on_next_line = True
+    for _line in ret:
+        if _line.startswith('---'):
+            start_on_next_line = True
+            continue
+        if start_on_next_line:
+            chunk = []
+            chunk.append(_line[0:21])
+            chunk.append(_line[21:28])
+            chunk.append(_line[28:30])
+            chunk.append(_line[30:])
+            if chunk[0].strip() == 'CRC-32':
+                continue
+            if chunk[1].strip().startswith('0x'):
+                header = chunk[0].strip().replace(' ', '_').lower()
+                value = chunk[3].strip()
+                facts['cumulus_syseeprom_' + header] = value
+
+
 def main():
     module = AnsibleModule(argument_spec=dict())
     platform_detect_exec = '/usr/bin/platform-detect'
     results = dict(
         msg='Collected Cumulus Linux specific facts',
         ansible_facts=dict(
-            productname=run_cl_cmd(module, platform_detect_exec)[0]
+            platform_detect_str=run_cl_cmd(module, platform_detect_exec)[0]
         )
     )
+    syseeprom_details(module, results.get('ansible_facts'))
     module.exit_json(**results)
 
 
