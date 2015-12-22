@@ -8,6 +8,18 @@ def run_cl_cmd(module, cmd):
     return ret
 
 
+def netshow_system_details(module, facts):
+    if not os.path.exists('/usr/bin/netshow'):
+        facts['cumulus_netshow_facts'] = 'install netshow using apt-get install netshow'
+        return
+    (rc, out, err) = module.run_command('/usr/bin/netshow system -j')
+    if rc:
+        facts['cumulus_netshow_facts'] = err
+        return
+    ret = json.loads(out)
+    facts['cumulus_netshow_facts'] = ret.get('system_obj').get('platform_info')
+
+
 def syseeprom_details(module, facts):
     (rc, out, err) = module.run_command('/usr/cumulus/bin/decode-syseeprom')
 
@@ -16,7 +28,7 @@ def syseeprom_details(module, facts):
         return
 
     ret = out.splitlines()
-    start_on_next_line = True
+    start_on_next_line = False
     for _line in ret:
         if _line.startswith('---'):
             start_on_next_line = True
@@ -45,6 +57,7 @@ def main():
         )
     )
     syseeprom_details(module, results.get('ansible_facts'))
+    netshow_system_details(module, results.get('ansible_facts'))
     module.exit_json(**results)
 
 
