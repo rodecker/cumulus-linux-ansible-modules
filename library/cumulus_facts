@@ -29,6 +29,7 @@ def syseeprom_details(module, facts):
 
     ret = out.splitlines()
     start_on_next_line = False
+    facts['cumulus_syseeprom_facts'] = dict()
     for _line in ret:
         if _line.startswith('---'):
             start_on_next_line = True
@@ -44,7 +45,7 @@ def syseeprom_details(module, facts):
             if chunk[1].strip().startswith('0x'):
                 header = chunk[0].strip().replace(' ', '_').lower()
                 value = chunk[3].strip()
-                facts['cumulus_syseeprom_' + header] = value
+                facts.get('cumulus_syseeprom_facts')[header] = value
 
 
 def main():
