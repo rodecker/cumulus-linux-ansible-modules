@@ -7,6 +7,18 @@ def run_cl_cmd(module, cmd):
     ret = out.splitlines()
     return ret
 
+def cl_resource_query(module, facts):
+    (rc, out, err) = module.run_command('/usr/cumulus/bin/cl-resource-query -k')
+    if rc:
+        facts['cumulus_resource_query_facts'] = err
+        return
+    ret = out.splitlines()
+    facts['cumulus_resource_query_facts'] = {}
+    for _line in ret:
+        linesplit = _line.split('=')
+        facts.get('cumulus_resource_query_facts')[linesplit[0]] = linesplit[1]
+
+
 def get_bios_version(module, facts):
     """
     grab bios info from dmesg. Seems to be common across
@@ -77,6 +89,7 @@ def main():
     syseeprom_details(module, results.get('ansible_facts'))
     netshow_system_details(module, results.get('ansible_facts'))
     get_bios_version(module, results.get('ansible_facts'))
+    cl_resource_query(module, results.get('ansible_facts'))
     module.exit_json(**results)
 
 
