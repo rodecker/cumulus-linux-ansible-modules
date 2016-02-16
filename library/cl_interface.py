@@ -86,6 +86,9 @@ options:
     clagd_peer_ip:
         description:
             - IP address of the directly connected peer switch interface
+    clagd_backup_ip:
+        description:
+            -  Specify a backup link for your peer links in the event that the peer link goes down
     clagd_sys_mac:
         description:
             - Clagd system mac address. Recommended to use the range starting
@@ -145,6 +148,7 @@ cl_interface:
   mtu: "{{ item.value.mtu|default(omit) }}"
   clagd_enable: "{{ item.value.clagd_enable|default(omit) }}"
   clagd_peer_ip: "{{ item.value.clagd_peer_ip|default(omit) }}"
+  clagd_backup_ip: "{{ item.value.clagd_backup_ip|default(omit) }}"
   clagd_sys_mac: "{{ item.value.clagd_sys_mac|default(omit) }}"
   clagd_priority: "{{ item.value.clagd_priority|default(omit) }}"
   vids: "{{ item.value.vids|default(omit) }}"
@@ -308,7 +312,7 @@ def build_desired_iface_config(module):
     build_vrr(module)
     for _attr in ['mtu', 'mstpctl_portnetwork', 'mstpctl_portadminedge',
                   'mstpctl_bpduguard', 'clagd_enable',
-                  'clagd_priority', 'clagd_peer_ip',
+                  'clagd_priority', 'clagd_peer_ip','clagd_backup_ip',
                   'clagd_sys_mac', 'clagd_args']:
         build_generic_attr(module, _attr)
 
@@ -384,6 +388,7 @@ def main():
             clagd_enable=dict(type='bool', choices=BOOLEANS),
             clagd_priority=dict(type='str'),
             clagd_peer_ip=dict(type='str'),
+            clagd_backup_ip=dict(type='str'),
             clagd_sys_mac=dict(type='str'),
             clagd_args=dict(type='str'),
             location=dict(type='str',
