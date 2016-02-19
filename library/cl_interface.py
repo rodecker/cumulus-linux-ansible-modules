@@ -88,7 +88,8 @@ options:
             - IP address of the directly connected peer switch interface
     clagd_backup_ip:
         description:
-            -  Specify a backup link for your peer links in the event that the peer link goes down
+            -  Backup IP address to use in case peer link is down by peer switch is still
+               up
     clagd_sys_mac:
         description:
             - Clagd system mac address. Recommended to use the range starting
@@ -108,11 +109,11 @@ notes:
     - because the module writes the interface directory location. Ensure that
       ``/etc/network/interfaces`` has a 'source /etc/network/interfaces.d/*' or
       whatever path is mentioned in the ``location`` attribute.
-    
+
     - if an interface definition already exists in '/etc/nework/interfaces' and
-      a second interface is defined with cl_interfaces module change may 
-      never be considered idempotent. All configuration should be 
-    
+      a second interface is defined with cl_interfaces module change may
+      never be considered idempotent. All configuration should be
+
     - For the config to be activated, i.e installed in the kernel,
       "service networking reload" needs be be executed. See EXAMPLES section.
 '''
@@ -397,7 +398,8 @@ def main():
         required_together=[
             ['virtual_ip', 'virtual_mac'],
             ['clagd_enable', 'clagd_priority',
-             'clagd_peer_ip', 'clagd_sys_mac']
+             'clagd_peer_ip', 'clagd_sys_mac'],
+            ['clagd_enable', 'clagd_backup_ip']
         ]
     )
 

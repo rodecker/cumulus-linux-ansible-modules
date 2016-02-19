@@ -63,7 +63,7 @@ options:
             - in vlan aware mode, defines vlan that is the untagged vlan
     mcsnoop:
         description:
- 	    - enable bridge-mcsnoop 
+            - Enables IGMP/MLD Snooping on the bridge
     stp:
         description:
             - enables spanning tree. As of Cumulus Linux 2.5 the default
@@ -188,18 +188,6 @@ def build_vids(module):
     _vids = module.params.get('vids')
     if _vids and len(_vids) > 0:
         module.custom_desired_config['config']['bridge-vids'] = ' '.join(_vids)
-
-
-def build_pvid(module):
-    _pvid = module.params.get('pvid')
-    if _pvid:
-        module.custom_desired_config['config']['bridge-pvid'] = str(_pvid)
-
-def build_mcsnoop(module):
-    _mcsnoop = module.params.get('mcsnoop')
-    if _mcsnoop:
-        module.custom_desired_config['config']['bridge-mcsnoop'] = str(_mcsnoop)
-
 
 def conv_bool_to_str(_value):
     if isinstance(_value, bool):
@@ -354,7 +342,7 @@ def main():
             virtual_mac=dict(type='str'),
             vids=dict(type='list'),
             pvid=dict(type='str'),
-            mcsnoop=dict(type='str'),
+            mcsnoop=dict(type='bool', choices=BOOLEANS),
             mstpctl_treeprio=dict(type='str'),
             vlan_aware=dict(type='bool', choices=BOOLEANS),
             stp=dict(type='bool', default='yes', choices=BOOLEANS),

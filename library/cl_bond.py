@@ -105,8 +105,8 @@ options:
               of using bypass_priority.
     use_carrier:
         description:
-            -  bond-use-carrier
-        default: 1
+            -  Specifies whether or not miimon should use MII or Ethtool ioctls. Default
+               value is 1.
     lacp_rate:
         description:
             - lacp rate
@@ -166,6 +166,7 @@ cl_bond:
   mstpctl_portnetwork: "{{ item.value.mstpctl_portnetwork|default('no') }}"
   mstpctl_portadminedge: "{{ item.value.mstpctl_portadminedge|default('no') }}"
   mstpctl_bpduguard: "{{ item.value.mstpctl_bpduguard|default('no') }}"
+  use_carrier: " {{ item.value.use_carrier|default(omit) }}"
 with_dict: cl_bonds
 notify: reload networking
 
@@ -414,7 +415,7 @@ def main():
             mode=dict(type='str', default='802.3ad'),
             miimon=dict(type='int', default=100),
             xmit_hash_policy=dict(type='str', default='layer3+4'),
-            use_carrier=dict(type='int', default=1),
+            use_carrier=dict(type='int', choices=[0, 1]),
             lacp_rate=dict(type='int', default=1),
             lacp_bypass_allow=dict(type='int', choices=[0, 1]),
             lacp_bypass_all_active=dict(type='int', choices=[0, 1]),
