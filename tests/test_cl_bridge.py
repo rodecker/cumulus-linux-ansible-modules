@@ -37,12 +37,16 @@ def test_module_args(mock_module,
             'vids': {'type': 'list'},
             'pvid': {'type': 'str'},
             'mstpctl_treeprio': {'type': 'str'},
+            'mcsnoop': {'type': 'bool',
+                        'choices': ['yes', 'on', '1', 'true', 1,
+                                    'no', 'off', '0', 'false', 0]},
             'stp': {'type': 'bool', 'default': 'yes', 'choices': [
                 'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
             'vlan_aware': {'type': 'bool', 'choices': ['yes', 'on', '1',
                            'true', 1, 'no', 'off', '0', 'false', 0]},
             'location': {'type': 'str', 'default': '/etc/network/interfaces.d'}}
     )
+
 
 @mock.patch('library.cl_bridge.os.path.exists')
 @mock.patch('library.cl_bridge.replace_config')
@@ -51,10 +55,10 @@ def test_module_args(mock_module,
 @mock.patch('library.cl_bridge.current_iface_config')
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_main_integration_test(mock_module,
-                     mock_curr_config,
-                     mock_desired_config,
-                     mock_compare,
-                     mock_replace, mock_exists):
+                               mock_curr_config,
+                               mock_desired_config,
+                               mock_compare,
+                               mock_replace, mock_exists):
     """ cl_bridge - basic integration test of main """
     mock_exists.return_value = True
     instance = mock_module.return_value
@@ -105,7 +109,7 @@ def test_vrr(mock_module):
     """
     mock_module.custom_desired_config = {'config': {}}
     mock_module.params = {'virtual_ip': '192.168.1.1/24',
-                           'virtual_mac': '00:00:5e:00:01:01'}
+                          'virtual_mac': '00:00:5e:00:01:01'}
     cl_int.build_vrr(mock_module)
     assert_equals(mock_module.custom_desired_config,
                   {'config': {
@@ -131,7 +135,7 @@ def test_build_address(mock_module):
     assert_equals(mock_module.custom_desired_config,
                   {'config': {'address': '1.1.1.1/24 2001:db8:abcd::/48'}})
 
-    #
+
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_build_addr_method(mock_module):
     """
@@ -145,6 +149,7 @@ def test_build_addr_method(mock_module):
     assert_equals(mock_module.custom_desired_config.get('addr_method'),
                   'loopback')
 
+
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_build_vids(mock_module):
     """
@@ -155,6 +160,20 @@ def test_build_vids(mock_module):
     cl_int.build_vids(mock_module)
     assert_equals(mock_module.custom_desired_config,
                   {'config': {'bridge-vids': '1 10-40'}})
+
+
+@mock.patch('library.cl_bridge.AnsibleModule')
+def test_mcsnoop_attr(mock_module):
+    """
+    cl_bridge - setting ifupdown2 bridge related options
+    """
+    mock_module.custom_desired_config = {'config': {}}
+    mock_module.params = {'mcsnoop': 1}
+    cl_int.build_bridge_attr(mock_module, 'mcsnoop')
+    assert_equals(mock_module.custom_desired_config,
+                  {'config': {
+                      'bridge-mcsnoop': '1'}})
+
 
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_build_bridge_attr(mock_module):
@@ -175,7 +194,8 @@ def test_build_bridge_attr(mock_module):
     assert_equals(mock_module.custom_desired_config,
                   {'config': {
                       'bridge-ports': 'glob swp1-3 swp5'}})
-    #
+
+
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_build_generic_attr(mock_module):
     """
@@ -197,11 +217,13 @@ def test_build_generic_attr(mock_module):
                   {'config': {
                       'mstpctl-portnetwork': 'yes'}})
 
+
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_config_dict_changed(mock_module):
     mock_module.custom_desired_config = {'config': {'address': '10.1.1.1/24'}}
     mock_module.custom_current_config = {}
     assert_equals(cl_int.config_dict_changed(mock_module), True)
+
 
 @mock.patch('library.cl_bridge.AnsibleModule')
 def test_config_changed(mock_module):
@@ -255,6 +277,7 @@ def test_config_changed(mock_module):
     }
     assert_equals(cl_int.config_changed(mock_module), True)
 
+
 @mock.patch('library.cl_bridge.build_bridge_attr')
 @mock.patch('library.cl_bridge.build_generic_attr')
 @mock.patch('library.cl_bridge.build_vrr')
@@ -272,8 +295,9 @@ def test_build_desired_iface_config(mock_module,
                                     mock_generic,
                                     mock_bridge):
     cl_int.build_desired_iface_config(mock_module)
-    assert_equals(mock_bridge.call_count, 4)
+    assert_equals(mock_bridge.call_count, 5)
     assert_equals(mock_generic.call_count, 2)
+
 
 @mock.patch('library.cl_bridge.AnsibleModule')
 @mock.patch('library.cl_bridge.run_cmd')
@@ -294,22 +318,3 @@ def test_replace_config_ifquery_not_outputting_text(mock_run_cmd, mock_module):
     cl_int.replace_config(mock_module)
     _msg='desired_config not copied into ifupdown2 text format. Not writing config to file'
     mock_module.fail_json.assert_called_with(msg=_msg)
-
-@mock.patch('library.cl_bridge.AnsibleModule')
-@mock.patch('library.cl_bridge.run_cmd')
-def test_replace_config_ifquery_not_outputting_text(mock_run_cmd, mock_module):
-    mock_module.params = {'location': './tests/',
-                          'name': 'swp1'
-                          }
-    mock_module.custom_desired_config = {
-        'name': 'swp1',
-        'addr_method': None,
-        'config':
-        {'address': '10.1.1.2/24',
-         'mtu': '9000'}
-    }
-    mock_run_cmd.return_value = 'ifupdown did something'
-    mock_module.jsonify = MagicMock(
-        return_value=json.dumps([mock_module.custom_desired_config]))
-    cl_int.replace_config(mock_module)
-    assert_equals(mock_module.fail_json.call_count, 0)
