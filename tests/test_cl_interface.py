@@ -24,7 +24,8 @@ def test_module_args(mock_module,
     mock_module.assert_called_with(
         required_together=[['virtual_ip', 'virtual_mac'],
                            ['clagd_enable', 'clagd_priority',
-                            'clagd_peer_ip', 'clagd_sys_mac']],
+                            'clagd_peer_ip', 'clagd_sys_mac'],
+                           ['clagd_enable', 'clagd_backup_ip']],
         argument_spec={
             'addr_method': {
                 'type': 'str',
@@ -50,6 +51,7 @@ def test_module_args(mock_module,
             'clagd_sys_mac': {'type': 'str'},
             'clagd_priority': {'type': 'str'},
             'clagd_args': {'type': 'str'},
+            'clagd_backup_ip': {'type': 'str'},
             'location': {'type': 'str',
                          'default': '/etc/network/interfaces.d'},
             'speed': {'type': 'str'}}
