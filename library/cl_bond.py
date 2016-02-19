@@ -103,6 +103,10 @@ options:
             - Activate all interfaces for bypass.
               It is recommended to configure all_active instead
               of using bypass_priority.
+    use_carrier:
+        description:
+            -  bond-use-carrier
+        default: 1
     lacp_rate:
         description:
             - lacp rate
@@ -319,7 +323,7 @@ def build_desired_iface_config(module):
     }
 
     for _attr in ['slaves', 'mode', 'xmit_hash_policy',
-                  'miimon', 'lacp_rate', 'lacp_bypass_allow',
+                  'miimon', 'use_carrier', 'lacp_rate', 'lacp_bypass_allow',
                   'lacp_bypass_period', 'lacp_bypass_all_active',
                   'min_links']:
         build_bond_attr(module, _attr)
@@ -410,6 +414,7 @@ def main():
             mode=dict(type='str', default='802.3ad'),
             miimon=dict(type='int', default=100),
             xmit_hash_policy=dict(type='str', default='layer3+4'),
+            use_carrier=dict(type='int', default=1),
             lacp_rate=dict(type='int', default=1),
             lacp_bypass_allow=dict(type='int', choices=[0, 1]),
             lacp_bypass_all_active=dict(type='int', choices=[0, 1]),
