@@ -18,6 +18,7 @@ def test_build_desired_iface_config(mock_module,
                    mock.call(mock_module, 'mode'),
                    mock.call(mock_module, 'xmit_hash_policy'),
                    mock.call(mock_module, 'miimon'),
+                   mock.call(mock_module, 'use_carrier'),
                    mock.call(mock_module, 'lacp_rate'),
                    mock.call(mock_module, 'lacp_bypass_allow'),
                    mock.call(mock_module, 'lacp_bypass_period'),
@@ -57,6 +58,7 @@ def test_module_args(mock_module,
             'virtual_ip': {'type': 'str'},
             'vids': {'type': 'list'},
             'pvid': {'type': 'str'},
+            'use_carrier': {'type': 'int', 'choices': [0, 1]},
             'mstpctl_portnetwork': {'type': 'bool', 'choices': [
                 'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
             'mstpctl_bpduguard': {'type': 'bool', 'choices': [
@@ -256,6 +258,7 @@ def test_build_generic_attr(mock_module):
                   {'config': {
                       'lacp-bypass-priority': 'swp1=10 swp2=10'}})
 
+
 @mock.patch('library.cl_bond.AnsibleModule')
 def test_config_dict_changed(mock_module):
     mock_module.custom_desired_config = {'config': {'address': '10.1.1.1/24'}}
@@ -335,22 +338,3 @@ def test_replace_config_ifquery_not_outputting_text(mock_run_cmd, mock_module):
     cl_int.replace_config(mock_module)
     _msg='desired_config not copied into ifupdown2 text format. Not writing config to file'
     mock_module.fail_json.assert_called_with(msg=_msg)
-
-@mock.patch('library.cl_bond.AnsibleModule')
-@mock.patch('library.cl_bond.run_cmd')
-def test_replace_config_ifquery_not_outputting_text(mock_run_cmd, mock_module):
-    mock_module.params = {'location': './tests/',
-                          'name': 'swp1'
-                          }
-    mock_module.custom_desired_config = {
-        'name': 'swp1',
-        'addr_method': None,
-        'config':
-        {'address': '10.1.1.2/24',
-         'mtu': '9000'}
-    }
-    mock_run_cmd.return_value = 'ifupdown did something'
-    mock_module.jsonify = MagicMock(
-        return_value=json.dumps([mock_module.custom_desired_config]))
-    cl_int.replace_config(mock_module)
-    assert_equals(mock_module.fail_json.call_count, 0)
