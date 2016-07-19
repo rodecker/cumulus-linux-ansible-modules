@@ -22,6 +22,7 @@
   cl_bridge:
     name: bridge2
     ports: ['swp16-17']
+    vlan_aware: true
   notify: reload networking
 
 - name: New bridge driver over-ride all defaults
