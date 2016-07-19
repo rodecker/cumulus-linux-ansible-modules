@@ -24,7 +24,6 @@ end
 describe file("#{intf_dir}/bridge2") do
   it { should be_file }
   its(:content) { should match(/iface bridge2/) }
-  its(:content) { should match(/bridge-vlan-aware yes/) }
   its(:content) { should match(/bridge-ports glob swp16-17/) }
   its(:content) { should match(/bridge-stp yes/) }
 end
