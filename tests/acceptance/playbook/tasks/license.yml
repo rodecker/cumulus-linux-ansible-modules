@@ -1,8 +1,10 @@
 - name: Copy test license
   copy: src=files/test_noeula.v1 dest=/tmp/test_noeula.v1
+  when: do_stub_license
 
 - name: Copy fake cl-license
   copy: src=files/cl-license dest=/usr/cumulus/bin/cl-license mode=0755
+  when: do_stub_license
 
 - name: License switch
   cl_license: src="/tmp/test_noeula.v1"
