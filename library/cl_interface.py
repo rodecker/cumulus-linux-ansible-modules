@@ -235,8 +235,7 @@ def build_address(module):
     if _ipv6 and len(_ipv6) > 0:
         _addresslist += _ipv6
     if len(_addresslist) > 0:
-        module.custom_desired_config['config']['address'] = ' '.join(
-            _addresslist)
+        module.custom_desired_config['config']['address'] = _addresslist
 
 
 def build_vids(module):
