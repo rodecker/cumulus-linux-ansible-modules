@@ -15,7 +15,7 @@
     stp: false
     mstpctl_treeprio: 4096
     virtual_ip: '192.168.100.1'
-    virtual_mac: '11:22:33:44:55:66'
+    virtual_mac: '00:00:5e:00:01:01'
   notify: reload networking
 
 - name: New bridge driver with defaults
@@ -38,5 +38,5 @@
     stp: false
     mstpctl_treeprio: 4096
     virtual_ip: '192.168.100.2'
-    virtual_mac: 'aa:bb:cc:dd:ee:ff'
+    virtual_mac: '00:00:5e:00:01:02'
   notify: reload networking
