@@ -15,7 +15,6 @@ describe file("#{intf_dir}/br1") do
   its(:content) { should match(/iface br1/) }
   its(:content) { should match(/bridge-ports glob swp14-15/) }
   its(:content) { should match(/bridge-stp no/) }
-  its(:content) { should match(/mtu 9000/) }
   its(:content) { should match(/mstpctl-treeprio 4096/) }
   its(:content) { should match(%r{address 10.0.0.1/24 192.168.1.0/16 2001:db8:abcd::/48}) }
 end
