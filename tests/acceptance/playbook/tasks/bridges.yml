@@ -11,7 +11,6 @@
     ipv4: ['10.0.0.1/24', '192.168.1.0/16']
     ipv6: ['2001:db8:abcd::/48']
     alias_name: 'classic bridge number 1'
-    mtu: 9000
     stp: false
     mstpctl_treeprio: 4096
     virtual_ip: '192.168.100.1'
@@ -22,6 +21,13 @@
   cl_bridge:
     name: bridge2
     ports: ['swp16-17']
+  notify: reload networking
+
+- name: Adjust MTU for ports what are part of bridge3
+  cl_interface:
+    name: "{{ item }}"
+    mtu: 9000
+  with_items: [swp18, swp19]
   notify: reload networking
 
 - name: New bridge driver over-ride all defaults
