@@ -29,7 +29,7 @@ describe file("#{intf_dir}/bond1") do
   its(:content) { should match(/bond-mode balance-alb/) }
   its(:content) { should match(/bond-xmit-hash-policy layer2/) }
   its(:content) { should match(%r{address 10.0.0.1/24 192.168.1.0/16 2001:db8:abcd::/48}) }
-  its(:content) { should match(/address-virtual 11:22:33:44:55:FF 192.168.20.1/) }
+  its(:content) { should match(/address-virtual 00:00:5e:00:01:01 192.168.20.1/) }
   its(:content) { should match(/mstpctl-portnetwork yes/) }
   its(:content) { should match(/mstpctl-bpduguard yes/) }
 end
