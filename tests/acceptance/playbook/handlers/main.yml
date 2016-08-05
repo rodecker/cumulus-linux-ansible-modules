@@ -1,2 +1,5 @@
 - name: reload networking
   service: name=networking state=reloaded
+
+- name: reload network interface configuration
+  command: /sbin/ifreload -a

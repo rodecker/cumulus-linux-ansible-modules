@@ -1,0 +1,11 @@
+# For detailed description refer to
+# https://docs.cumulusnetworks.com/display/DOCS/Spanning+Tree+and+Rapid+Spanning+Tree
+# section 'Spanning Tree and Rapid Spanning Tree'
+# subsection 'Configuring STP within a VLAN-aware Bridge'
+---
+# vars:
+#   br2_ports: "{{['swp1', 'swp4', 'swp5']|join(' ')}}"
+
+- name: Configure STP with a VLAN-aware bridge
+  cl_bridge: name='br2' ports="{{br2_ports}}" vlan_aware=yes vids=100 pvid=1
+  notify: reload network interface configuration

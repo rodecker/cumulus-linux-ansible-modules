@@ -1,0 +1,17 @@
+# For detailed description refer to
+# https://docs.cumulusnetworks.com/display/DOCS/Spanning+Tree+and+Rapid+Spanning+Tree
+# section 'Spanning Tree and Rapid Spanning Tree'
+# sub-section 'Configuring STP within a Traditional Mode Bridge'
+---
+# vars:
+#   br100_ports: "{{['swp1.100', 'swp5.100']|join(' ')}}"
+#   br1_ports: "{{['swp1', 'swp4', 'swp5']|join(' ')}}"
+
+- name: Configured for tagging VLAN100
+  cl_bridge: name='br100' ports="{{br100_ports}}"
+
+- name: Configured with no tag
+  cl_bridge: name='br1' ports="{{br1_ports}}"
+  notify: reload network interface configuration
+
+
