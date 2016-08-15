@@ -1,0 +1,6 @@
+---
+# vars:
+#   - bridge_A_ports: ['swp1', 'swp2']
+#   - bridge_A_ports: ['swp3', 'swp4']
+- cl_bridge: name='bridge-A' ports="{{bridge_A_ports}}"
+- cl_bridge: name='bridge-B' ports="{{bridge_B_ports}}"

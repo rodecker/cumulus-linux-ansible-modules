@@ -1,0 +1,4 @@
+---
+# vars:
+#   bond0_slaves: "{{['swp1', 'swp2', 'swp3', 'swp4']|join(' ')}}"
+- cl_bond: name='bond0' ipv4='10.0.0.1/30' slaves="{{bond0_slaves}}"

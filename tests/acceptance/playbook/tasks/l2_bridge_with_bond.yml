@@ -1,0 +1,6 @@
+---
+# vars:
+#   - bond0_ports: "{{['swp1', 'swp2', 'swp3', 'swp4']|join(' ')}}"
+#   - my_bridge_ports: "{{['bond0', 'swp5', 'swp6']|join(' ')}}"
+- cl_bond: name='bond0' ipv4='10.0.0.1/30' slaves="{{bond0_ports}}"
+- cl_bridge: name='my_bridge' ports="{{my_bridge_ports}}"
