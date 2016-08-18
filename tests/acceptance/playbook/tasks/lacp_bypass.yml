@@ -1,2 +1,2 @@
 ---
-cl_bond: name=bond1 slaves={{bond1_slaves}} clag_id=1 lacp_bypass_allow=yes
+- cl_bond: name=bond1 slaves={{bond1_slaves}} clag_id=1 lacp_bypass_allow=yes
