@@ -55,7 +55,6 @@ options:
     mtu:
         description:
             - set MTU. Configure Jumbo Frame by setting MTU to 9000.
-
     virtual_ip:
         description:
             - define IPv4 virtual IP used by the Cumulus VRR feature
@@ -97,6 +96,9 @@ options:
     pvid:
         description:
             - in vlan aware mode, defines vlan that is the untagged vlan
+    bridge_access:
+        description:
+            - in vlan aware mode, defines an access vlan for the interface
     location:
         description:
             - interface directory location
@@ -134,6 +136,10 @@ notify: reload networking
 
 # configure subinterface with an IP
 cl_interface: name=bond0.100  alias_name='my bond' ipv4=10.1.1.1/24
+notify: reload networking
+
+# configure physical switch port as an access port
+cl_interface: name=swp2 bridge_access=10
 notify: reload networking
 
 # define cl_interfaces once in tasks
@@ -244,6 +250,13 @@ def build_pvid(module):
         module.custom_desired_config['config']['bridge-pvid'] = str(_pvid)
 
 
+def build_bridge_access(module):
+    _bridge_access = module.params.get('bridge_access')
+    if _bridge_access:
+        module.custom_desired_config['config']['bridge_access'] = \
+            str(_bridge_access)
+
+
 def build_speed(module):
     _speed = module.params.get('speed')
     if _speed:
@@ -307,6 +320,7 @@ def build_desired_iface_config(module):
     build_address(module)
     build_vids(module)
     build_pvid(module)
+    build_bridge_access(module)
     build_speed(module)
     build_alias_name(module)
     build_vrr(module)
@@ -382,6 +396,7 @@ def main():
             virtual_mac=dict(type='str'),
             vids=dict(type='list'),
             pvid=dict(type='str'),
+            bridge_access=dict(type='str'),
             mstpctl_portnetwork=dict(type='bool', choices=BOOLEANS),
             mstpctl_portadminedge=dict(type='bool', choices=BOOLEANS),
             mstpctl_bpduguard=dict(type='bool', choices=BOOLEANS),

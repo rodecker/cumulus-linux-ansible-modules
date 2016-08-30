@@ -39,6 +39,7 @@ def test_module_args(mock_module,
             'virtual_ip': {'type': 'str'},
             'vids': {'type': 'list'},
             'pvid': {'type': 'str'},
+            'bridge_access': {'type': 'str'},
             'mstpctl_portnetwork': {'type': 'bool', 'choices': [
                 'yes', 'on', '1', 'true', 1, 'no', 'off', '0', 'false', 0]},
             'mstpctl_portadminedge': {'type': 'bool', 'choices': [
@@ -183,6 +184,18 @@ def test_build_pvid(mock_module):
     cl_int.build_pvid(mock_module)
     assert_equals(mock_module.custom_desired_config,
                   {'config': {'bridge-pvid': '2'}})
+
+
+@mock.patch('library.cl_interface.AnsibleModule')
+def test_build_bridge_access(mock_module):
+    """
+    cl_interface - test building desired bridge_access
+    """
+    mock_module.custom_desired_config = {'config': {}}
+    mock_module.params = {'bridge_access': 2}
+    cl_int.build_bridge_access(mock_module)
+    assert_equals(mock_module.custom_desired_config,
+                  {'config': {'bridge_access': '2'}})
 
 
 @mock.patch('library.cl_interface.AnsibleModule')
