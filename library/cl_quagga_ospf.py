@@ -151,7 +151,7 @@ def get_running_config(module):
         if m0:
             got_global_config = True
             continue
-        m1 = re.match('^interface\s+(\w+)', line)
+        m1 = re.match('^interface\s+(\w+)$', line)
         if m1:
             module.ifacename = m1.group(1)
             module.interface_config[module.ifacename] = []
